@@ -2,50 +2,45 @@ import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
 import numpy as np
 
-import logging
-logging.getLogger().setLevel(logging.CRITICAL)
+# import logging
+# logging.getLogger().setLevel(logging.CRITICAL)
 
-import warnings
-warnings.filterwarnings('ignore')
+# import warnings
+# warnings.filterwarnings('ignore')
 
-# Set the device
 device = 'cpu'
 if torch.cuda.is_available():
     device = 'cuda'
 
-# Load the tokenizer and model
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2-medium')
 model = GPT2LMHeadModel.from_pretrained('gpt2-medium')
 model = model.to(device)
 
-# Input text
-input_text = "I drink"
+def predict_next_word(input_text, model, tokenizer, device, top_k=10):
+    inputs = tokenizer(input_text, return_tensors='pt')
+    inputs = {key: value.to(device) for key, value in inputs.items()}
 
-# Tokenize the input text
-inputs = tokenizer(input_text, return_tensors='pt')
-inputs = {key: value.to(device) for key, value in inputs.items()}
+    with torch.no_grad():
+        outputs = model(**inputs)
 
-# Get the model outputs (logits)
-with torch.no_grad():
-    outputs = model(**inputs)
+    logits = outputs.logits
 
-# The logits for the next word prediction
-logits = outputs.logits
+    next_token_logits = logits[:, -1, :]
 
-# Select the logits for the last token in the input sequence
-next_token_logits = logits[:, -1, :]
+    probabilities = torch.softmax(next_token_logits, dim=-1).squeeze().cpu().numpy()
 
-# Convert logits to probabilities
-probabilities = torch.softmax(next_token_logits, dim=-1).squeeze().cpu().numpy()
+    token_ids = np.arange(len(probabilities))
+    probability_distribution = list(zip(token_ids, probabilities))
 
-# Get the token ids and corresponding probabilities
-token_ids = np.arange(len(probabilities))
-probability_distribution = list(zip(token_ids, probabilities))
+    probability_distribution = [(tokenizer.decode([token_id]), prob) for token_id, prob in probability_distribution]
+    probability_distribution = sorted(probability_distribution, key=lambda x: x[1], reverse=True)
 
-# Convert token ids to words and sort by probability
-probability_distribution = [(tokenizer.decode([token_id]), prob) for token_id, prob in probability_distribution]
-probability_distribution = sorted(probability_distribution, key=lambda x: x[1], reverse=True)
+    return probability_distribution[:top_k]
 
-# Display the top 10 probable next words
-for word, prob in probability_distribution[:10]:
+user_input = input("Prompt : ")
+
+predictions = predict_next_word(user_input, model, tokenizer, device)
+
+print(f"Top {len(predictions)} next words :")
+for word, prob in predictions:
     print(f"{word}: {prob:.6f}")
