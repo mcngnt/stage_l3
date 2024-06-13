@@ -1,0 +1,7 @@
+CA-AN-ZN.g
+CA-BO-IO.g
+CA-FB-MG.g
+CA-JL-JT.g
+CA-LJ-MJ.g
+CA-LD-GD.g
+CA-MB-LB.g

@@ -1,0 +1,10 @@
+AA-AN-DL.g
+AA-BO-CM.g
+AA-GD-DD.g
+AA-JL-AZ.g
+AA-LA-AN.g
+AA-LD-BF.g
+AA-MG-CH.g
+AA-MJ-CJ.g
+AA-ML-MP.g
+AA-XA-EH.g
