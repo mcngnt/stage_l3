@@ -153,7 +153,7 @@ def load_data_sliding(file_list, annotations_dir, num_feats=-1):
 def train_model(config):
     for listener in listener_lst:
         print("Current listener: {}".format(listener))
-        file_list_path = '/baie/nfs-cluster-1/data1/raid1/homedirs/abishek.agrawal/projects/BC-MC-Prediction/LSTM/data/splits/' + listener + '.txt'
+        file_list_path = '/data/splits/' + listener + '.txt'
         file_list = list(pd.read_csv(file_list_path, header=None, dtype=str)[0])
         fold = 0
         acc_list = []

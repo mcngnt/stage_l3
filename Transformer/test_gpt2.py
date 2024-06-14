@@ -37,7 +37,8 @@ def predict_next_word(input_text, model, tokenizer, device, top_k=10):
 
     return probability_distribution[:top_k]
 
-user_input = input("Prompt : ")
+print("Prompt : ")
+user_input = input()
 
 predictions = predict_next_word(user_input, model, tokenizer, device)
 
