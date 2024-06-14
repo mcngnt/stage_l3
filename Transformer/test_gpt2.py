@@ -92,13 +92,13 @@ def fine_tune_gpt2(dataset, model, tokenizer, output_dir, epochs=3, batch_size=4
     tokenizer.save_pretrained(output_dir)
 
 # File path to your training data
-train_file_path = "./Transformer/dataset.txt"
+train_file_path = "./stage_l3/Transformer/dataset.txt"
 
 # Load the dataset
 dataset = load_dataset(train_file_path, tokenizer)
 
 # Output directory to save the model
-output_dir = "./Transformer/output/gpt2-finetuned"
+output_dir = "./stage_l3/Transformer/output/gpt2-finetuned"
 
 # Fine-tune the model
 fine_tune_gpt2(dataset, model, tokenizer, output_dir)
