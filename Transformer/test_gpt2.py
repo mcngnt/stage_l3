@@ -77,7 +77,7 @@ def fine_tune_gpt2(dataset, model, tokenizer, output_dir, epochs=3, batch_size=4
     )
 
     # Initialize the Trainer
-    trainer = Trainer(
+    trainer = transformers.Trainer(
         model=model,
         args=training_args,
         data_collator=data_collator,
