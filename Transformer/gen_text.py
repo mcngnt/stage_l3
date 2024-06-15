@@ -50,7 +50,7 @@ user_prompt = input()
 
 
 model = fine_tuned_model
-if model_name == "n":
+if use_model_name == "n":
     model = basic_model
 
 # Generate text with the fine-tuned model
